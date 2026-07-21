@@ -1,0 +1,33 @@
+name: Denní kurz EUR
+
+on:
+
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+
+  kurz:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Stáhnout repozitář
+        uses: actions/checkout@v4
+
+      - name: Nainstalovat Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalace knihoven
+        run: pip install -r requirements.txt
+
+      - name: Spustit program
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python send_kurz.py
